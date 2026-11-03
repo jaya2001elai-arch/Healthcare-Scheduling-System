@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Appointment Management</h2>
+
+<a href="{{ url_for('add_appointment') }}">+ Add Appointment</a>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Reason</th>
+        <th>Status</th>
+    </tr>
+
+    {% for a in appointments %}
+    <tr>
+        <td>{{ a.appointment_id }}</td>
+        <td>{{ a.patient_name }}</td>
+        <td>{{ a.doctor_name }}</td>
+        <td>{{ a.appointment_date }}</td>
+        <td>{{ a.appointment_time }}</td>
+        <td>{{ a.reason }}</td>
+        <td>
+            <form method="POST" action="{{ url_for('update_appointment_status', appointment_id=a.appointment_id) }}">
+
+                <select name="status">
+
+                    <option value="Booked" {% if a.status=='Booked' %}selected{% endif %}>Booked</option>
+
+                    <option value="Completed" {% if a.status=='Completed' %}selected{% endif %}>Completed</option>
+
+                    <option value="Cancelled" {% if a.status=='Cancelled' %}selected{% endif %}>Cancelled</option>
+
+                    <option value="Rescheduled" {% if a.status=='Rescheduled' %}selected{% endif %}>Rescheduled</option>
+
+                </select>
+
+                <button type="submit">Update</button>
+
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

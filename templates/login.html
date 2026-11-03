@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Healthcare Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <h1>Healthcare Scheduling System</h1>
+        <h3>Login to Your Account</h3>
+        {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+        {% endfor %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter your password" required>
+
+            <label>Login As</label>
+            <select name="role" required>
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Patient">Patient</option>
+            </select>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

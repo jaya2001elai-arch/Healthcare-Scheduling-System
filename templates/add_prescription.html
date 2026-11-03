@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add New Prescription</h2>
+
+<div class="form-container">
+
+    <form method="POST" action="{{ url_for('add_prescription') }}">
+
+        <label>Prescription Date</label>
+        <input type="date" name="prescription_date" required>
+
+        <label>Select Patient</label>
+        <select name="patient_id" required>
+            <option value="">-- Select Patient --</option>
+            {% for patient in patients %}
+            <option value="{{ patient.patient_id }}">
+                {{ patient.full_name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Select Doctor</label>
+        <select name="doctor_id" required>
+            <option value="">-- Select Doctor --</option>
+            {% for doctor in doctors %}
+            <option value="{{ doctor.doctor_id }}">
+                {{ doctor.full_name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Diagnosis</label>
+        <textarea name="diagnosis" rows="3" placeholder="Enter diagnosis" required></textarea>
+
+        <label>Instructions</label>
+        <textarea name="instructions" rows="3" placeholder="Enter instructions" required></textarea>
+
+        <hr>
+
+        <h3>Medicine Details</h3>
+
+        <div id="medicine-container">
+
+            <div class="medicine-row">
+
+                <label>Medicine Name</label>
+                <input type="text" name="medicine_name[]" placeholder="Enter medicine name">
+
+                <label>Dosage</label>
+                <input type="text" name="dosage[]" placeholder="Example: 500 mg">
+
+                <label>Frequency</label>
+                <input type="text" name="frequency[]" placeholder="Example: Twice a day">
+
+                <label>Duration</label>
+                <input type="text" name="duration[]" placeholder="Example: 5 days">
+
+                <label>Quantity</label>
+                <input type="number" name="quantity[]" min="1" placeholder="Enter quantity">
+
+                <hr>
+
+            </div>
+
+        </div>
+
+        <button type="button" onclick="addMedicine()">
+            + Add Another Medicine
+        </button>
+
+        <br><br>
+
+        <button type="submit">Save Prescription</button>
+
+        <a href="{{ url_for('prescriptions') }}">Cancel</a>
+
+    </form>
+
+</div>
+
+<script>
+
+    function addMedicine() {
+
+        const container = document.getElementById("medicine-container");
+
+        const newMedicine = document.createElement("div");
+
+        newMedicine.className = "medicine-row";
+
+        newMedicine.innerHTML = `
+        <hr>
+
+        <h4>Additional Medicine</h4>
+
+        <label>Medicine Name</label>
+        <input type="text" name="medicine_name[]"
+               placeholder="Enter medicine name">
+
+        <label>Dosage</label>
+        <input type="text" name="dosage[]"
+               placeholder="Example: 500 mg">
+
+        <label>Frequency</label>
+        <input type="text" name="frequency[]"
+               placeholder="Example: Twice a day">
+
+        <label>Duration</label>
+        <input type="text" name="duration[]"
+               placeholder="Example: 5 days">
+
+        <label>Quantity</label>
+        <input type="number" name="quantity[]"
+               min="1" placeholder="Enter quantity">
+
+        <button type="button"
+                onclick="this.parentElement.remove()">
+            Remove Medicine
+        </button>
+
+        <hr>
+    `;
+
+        container.appendChild(newMedicine);
+    }
+
+</script>
+
+{% endblock %}

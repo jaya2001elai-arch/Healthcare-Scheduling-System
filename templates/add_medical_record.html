@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add New Medical Record</h2>
+
+<div class="form-container">
+
+    <form method="POST" action="{{ url_for('add_medical_record') }}">
+
+        <label>Select Patient</label>
+        <select name="patient_id" required>
+            <option value="">-- Select Patient --</option>
+            {% for p in patients %}
+            <option value="{{ p.patient_id }}">{{ p.full_name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Select Doctor</label>
+        <select name="doctor_id" required>
+            <option value="">-- Select Doctor --</option>
+            {% for d in doctors %}
+            <option value="{{ d.doctor_id }}">{{ d.full_name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Record Date</label>
+        <input type="date" name="record_date" required>
+
+        <label>Symptoms</label>
+        <textarea name="symptoms" rows="3" required></textarea>
+
+        <label>Diagnosis</label>
+        <textarea name="diagnosis" rows="3" required></textarea>
+
+        <label>Treatment</label>
+        <textarea name="treatment" rows="3" required></textarea>
+
+        <label>Additional Notes</label>
+        <textarea name="notes" rows="3"></textarea>
+
+        <br>
+
+        <button type="submit">Save Medical Record</button>
+
+        <a href="{{ url_for('medical_records') }}">Cancel</a>
+
+    </form>
+
+</div>
+
+{% endblock %}

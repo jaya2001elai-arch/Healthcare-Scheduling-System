@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Medical Records</h2>
+
+<a href="{{ url_for('add_medical_record') }}" class="btn">
+    + Add New Medical Record
+</a>
+
+<br><br>
+
+<table border="1" cellpadding="10" cellspacing="0">
+
+    <tr>
+        <th>Record ID</th>
+        <th>Patient Name</th>
+        <th>Doctor Name</th>
+        <th>Record Date</th>
+        <th>Symptoms</th>
+        <th>Diagnosis</th>
+        <th>Treatment</th>
+        <th>Additional Notes</th>
+    </tr>
+
+    {% for r in records %}
+    <tr>
+        <td>{{ r.record_id }}</td>
+        <td>{{ r.patient_name }}</td>
+        <td>{{ r.doctor_name }}</td>
+        <td>{{ r.record_date }}</td>
+        <td>{{ r.symptoms }}</td>
+        <td>{{ r.diagnosis }}</td>
+        <td>{{ r.treatment }}</td>
+        <td>{{ r.notes }}</td>
+    </tr>
+
+    {% else %}
+    <tr>
+        <td colspan="8">No medical records available</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

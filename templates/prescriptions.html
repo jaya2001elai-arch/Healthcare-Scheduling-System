@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Prescription Management</h2>
+
+<a href="{{ url_for('add_prescription') }}" class="btn">
+    + Add New Prescription
+</a>
+<br><br>
+
+
+<table border="1" cellpadding="10" cellspacing="0">
+
+    <tr>
+        <th>Prescription ID</th>
+        <th>Patient Name</th>
+        <th>Doctor Name</th>
+        <th>Prescription Date</th>
+        <th>Diagnosis</th>
+        <th>Instructions</th>
+        <th>Medicines</th>
+    </tr>
+
+    {% for p in prescriptions %}
+    <tr>
+        <td>{{ p.prescription_id }}</td>
+        <td>{{ p.patient_name }}</td>
+        <td>{{ p.doctor_name }}</td>
+        <td>{{ p.prescription_date }}</td>
+        <td>{{ p.diagnosis }}</td>
+        <td>{{ p.instructions }}</td>
+        <td>
+            <a href="{{ url_for('prescription_medicines', prescription_id=p.prescription_id) }}">
+                View Medicines
+            </a>
+        </td>
+    </tr>
+
+    {% else %}
+    <tr>
+        <td colspan="7">No prescriptions available</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

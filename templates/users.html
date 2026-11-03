@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>User and Role Management</h2>
+
+<table border="1" cellpadding="10" cellspacing="0" width="100%">
+
+    <tr>
+        <th>User ID</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Role</th>
+    </tr>
+
+    {% for u in users %}
+    <tr>
+        <td>{{ u.user_id }}</td>
+        <td>{{ u.full_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+    </tr>
+
+    {% else %}
+    <tr>
+        <td colspan="4">No users available</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

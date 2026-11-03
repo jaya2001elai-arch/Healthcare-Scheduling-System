@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Billing Management</h2>
+
+<a href="{{ url_for('add_bill') }}">+ Add Bill</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Bill ID</th>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Consultation Fee</th>
+            <th>Medicine Charge</th>
+            <th>Lab Charge</th>
+            <th>Total Amount</th>
+            <th>Payment Status</th>
+            <th>Update Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for b in bills %}
+        <tr>
+            <td>{{ b.bill_id }}</td>
+            <td>{{ b.patient_name }}</td>
+            <td>{{ b.bill_date }}</td>
+            <td>{{ b.consultation_fee }}</td>
+            <td>{{ b.medicine_charge }}</td>
+            <td>{{ b.lab_charge }}</td>
+            <td>{{ b.total_amount }}</td>
+            <td>{{ b.payment_status }}</td>
+            <td>
+                <form method="POST"
+                      action="{{ url_for('update_bill_status', bill_id=b.bill_id) }}">
+                    <select name="payment_status">
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Partially Paid">Partially Paid</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="9">No bills found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

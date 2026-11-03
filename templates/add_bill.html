@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add New Bill</h2>
+
+<form method="POST">
+    <label>Patient:</label>
+    <select name="patient_id" required>
+        <option value="">Select Patient</option>
+        {% for p in patients %}
+        <option value="{{ p.patient_id }}">{{ p.full_name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Bill Date:</label>
+    <input type="date" name="bill_date" required>
+
+    <label>Consultation Fee:</label>
+    <input type="number" name="consultation_fee" step="0.01" min="0" value="0" required>
+
+    <label>Medicine Charge:</label>
+    <input type="number" name="medicine_charge" step="0.01" min="0" value="0" required>
+
+    <label>Lab Charge:</label>
+    <input type="number" name="lab_charge" step="0.01" min="0" value="0" required>
+
+    <button type="submit">Save Bill</button>
+</form>
+
+<a href="{{ url_for('billing') }}">Back to Billing</a>
+{% endblock %}

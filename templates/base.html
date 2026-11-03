@@ -1,0 +1,80 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Healthcare Scheduling System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>HealthCare</h2>
+        <p class="subtitle">Scheduling System</p>
+
+        {% if session.get('user_id') %}
+
+
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+
+            <a href="{{ url_for('patients') }}">Patient Management</a>
+
+            <a href="{{ url_for('doctors') }}">Doctor Management</a>
+
+            <a href="{{ url_for('appointments') }}">Appointment Scheduling</a>
+
+            <a href="{{ url_for('prescriptions') }}">Prescription Management</a>
+
+            <a href="{{ url_for('medical_records') }}">Medical Records</a>
+
+            <a href="{{ url_for('billing') }}">Billing Management</a>
+
+            <a href="{{ url_for('reports') }}">Reports and Analytics</a>
+
+            <a href="{{ url_for('users') }}">User and Role Management</a>
+        </nav>
+
+        {% endif %}
+
+    </div>
+
+    <div class="main-content">
+
+        {% if session.get('user_id') %}
+        <header>
+            <div>
+                <h1>Healthcare Management System</h1>
+                <p>Welcome, {{ session.get('name', 'User') }}</p>
+            </div>
+
+            <div class="profile">
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </header>
+        {% endif %}
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+    </div>
+
+</body>
+
+</html>
+```

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Prescription Medicine Details</h2>
+
+<p><strong>Prescription ID:</strong> {{ prescription_id }}</p>
+
+<table border="1" cellpadding="10" cellspacing="0">
+
+    <tr>
+        <th>Medicine ID</th>
+        <th>Medicine Name</th>
+        <th>Dosage</th>
+        <th>Frequency</th>
+        <th>Duration</th>
+        <th>Quantity</th>
+    </tr>
+
+    {% for medicine in medicines %}
+
+    <tr>
+        <td>{{ medicine.medicine_id }}</td>
+        <td>{{ medicine.medicine_name }}</td>
+        <td>{{ medicine.dosage }}</td>
+        <td>{{ medicine.frequency }}</td>
+        <td>{{ medicine.duration }}</td>
+        <td>{{ medicine.quantity }}</td>
+    </tr>
+
+    {% else %}
+
+    <tr>
+        <td colspan="6">No medicines available</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<br>
+
+<a href="{{ url_for('prescriptions') }}">Back to Prescriptions</a>
+
+{% endblock %}

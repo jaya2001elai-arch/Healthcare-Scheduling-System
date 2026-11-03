@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <h2>Dashboard</h2>
+    <p>Welcome to Healthcare Scheduling System</p>
+</div>
+
+<!-- DASHBOARD SUMMARY CARDS -->
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>Total Patients</h3>
+        <h2>{{ total_patients }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Doctors</h3>
+        <h2>{{ total_doctors }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Appointments</h3>
+        <h2>{{ total_appointments }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Pending Appointments</h3>
+        <h2>{{ pending_appointments }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Revenue</h3>
+        <h2>₹ {{ total_revenue }}</h2>
+    </div>
+
+</div>
+
+<br>
+<hr>
+
+<!-- RECENT APPOINTMENTS -->
+
+<div class="dashboard-section">
+
+    <h2>Recent Appointments</h2>
+
+    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for a in recent_appointments %}
+
+            <tr>
+                <td>{{ a.patient_name }}</td>
+                <td>{{ a.doctor_name }}</td>
+                <td>{{ a.appointment_date }}</td>
+                <td>{{ a.appointment_time }}</td>
+                <td>{{ a.status }}</td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="5">No appointments available</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<br>
+<hr>
+
+<!-- RECENT PRESCRIPTIONS -->
+
+<div class="dashboard-section">
+
+    <h2>Recent Prescriptions</h2>
+
+    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+
+        <thead>
+            <tr>
+                <th>Prescription ID</th>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Prescription Date</th>
+                <th>Diagnosis</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for p in recent_prescriptions %}
+
+            <tr>
+                <td>{{ p.prescription_id }}</td>
+                <td>{{ p.patient_name }}</td>
+                <td>{{ p.doctor_name }}</td>
+                <td>{{ p.prescription_date }}</td>
+                <td>{{ p.diagnosis }}</td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="5">No prescriptions available</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
