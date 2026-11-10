@@ -2,134 +2,601 @@
 
 {% block content %}
 
-<div class="dashboard-header">
-    <h2>Dashboard</h2>
-    <p>Welcome to Healthcare Scheduling System</p>
+<div class="dashboard-page">
+
+    <!-- WELCOME BANNER -->
+    <section class="dashboard-header">
+
+        <div class="banner-content">
+
+            <span class="banner-tag">
+                ♥ HEALTHCARE MANAGEMENT
+            </span>
+
+            <h1>Smarter Care.<br>Better Healthcare.</h1>
+
+            <p>
+                Manage patients, doctors and appointments
+                efficiently in one place.
+            </p>
+
+            <div class="banner-note">
+                ✚ Your Healthcare Management Dashboard
+            </div>
+
+        </div>
+
+        <div class="banner-image-icon">🩺</div>
+
+    </section>
+
+
+    <!-- SUMMARY CARDS -->
+    <section class="dashboard-cards">
+
+        <div class="card stat-card">
+
+            <div class="stat-icon purple-icon">👥</div>
+
+            <div>
+                <p>Total Patients</p>
+                <h2>{{ total_patients }}</h2>
+                <small>Registered patients</small>
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-icon pink-icon">👨‍⚕️</div>
+
+            <div>
+                <p>Total Doctors</p>
+                <h2>{{ total_doctors }}</h2>
+                <small>Available doctors</small>
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-icon rose-icon">📅</div>
+
+            <div>
+                <p>Total Appointments</p>
+                <h2>{{ total_appointments }}</h2>
+                <small>Scheduled appointments</small>
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-icon orange-icon">⏳</div>
+
+            <div>
+                <p>Pending Appointments</p>
+                <h2>{{ pending_appointments }}</h2>
+                <small>Awaiting confirmation</small>
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-icon green-icon">₹</div>
+
+            <div>
+                <p>Total Revenue</p>
+                <h2>₹{{ total_revenue }}</h2>
+                <small>Collected revenue</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HEALTHCARE ANALYTICS -->
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Healthcare Analytics</h2>
+                <p>Overview of your hospital activities</p>
+            </div>
+
+            <span class="section-icon">📊</span>
+
+        </div>
+
+
+        <div class="analytics-grid">
+
+            <!-- BAR CHART -->
+            <div class="dashboard-panel chart-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <h3>Hospital Overview</h3>
+
+                        <p class="panel-subtitle">
+                            Patients, doctors and appointments
+                        </p>
+                    </div>
+
+                    <span class="chart-icon">📈</span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="overviewChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- DOUGHNUT CHART -->
+            <div class="dashboard-panel chart-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <h3>Appointment Status</h3>
+
+                        <p class="panel-subtitle">
+                            All appointment status distribution
+                        </p>
+                    </div>
+
+                    <span class="chart-icon">📅</span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="appointmentChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENT APPOINTMENTS -->
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Recent Appointments</h2>
+                <p>Latest patient appointment details</p>
+            </div>
+
+            <span class="section-icon">🗓️</span>
+
+        </div>
+
+
+        <div class="dashboard-panel table-panel">
+
+            <div class="table-responsive">
+
+                <table class="dashboard-table">
+
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for a in recent_appointments %}
+
+                        <tr>
+
+                            <td>👤 {{ a.patient_name }}</td>
+
+                            <td>🩺 {{ a.doctor_name }}</td>
+
+                            <td>{{ a.appointment_date }}</td>
+
+                            <td>{{ a.appointment_time }}</td>
+
+                            <td>
+                                <span class="status-badge">
+                                    {{ a.status }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty-message">
+                                📅 No appointments available
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENT PRESCRIPTIONS -->
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+                <h2>Recent Prescriptions</h2>
+                <p>Latest prescription records</p>
+            </div>
+
+            <span class="section-icon">💊</span>
+
+        </div>
+
+
+        <div class="dashboard-panel table-panel">
+
+            <div class="table-responsive">
+
+                <table class="dashboard-table">
+
+                    <thead>
+                        <tr>
+                            <th>Prescription ID</th>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Prescription Date</th>
+                            <th>Diagnosis</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for p in recent_prescriptions %}
+
+                        <tr>
+
+                            <td>#{{ p.prescription_id }}</td>
+
+                            <td>👤 {{ p.patient_name }}</td>
+
+                            <td>🩺 {{ p.doctor_name }}</td>
+
+                            <td>{{ p.prescription_date }}</td>
+
+                            <td>{{ p.diagnosis }}</td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty-message">
+                                💊 No prescriptions available
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
 
-<!-- DASHBOARD SUMMARY CARDS -->
 
-<div class="dashboard-cards">
+<!-- CHART.JS LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="card">
-        <h3>Total Patients</h3>
-        <h2>{{ total_patients }}</h2>
-    </div>
 
-    <div class="card">
-        <h3>Total Doctors</h3>
-        <h2>{{ total_doctors }}</h2>
-    </div>
+<script>
 
-    <div class="card">
-        <h3>Total Appointments</h3>
-        <h2>{{ total_appointments }}</h2>
-    </div>
+    document.addEventListener("DOMContentLoaded", function () {
 
-    <div class="card">
-        <h3>Pending Appointments</h3>
-        <h2>{{ pending_appointments }}</h2>
-    </div>
+        // CHECK CHART.JS
+        if (typeof Chart === "undefined") {
 
-    <div class="card">
-        <h3>Total Revenue</h3>
-        <h2>₹ {{ total_revenue }}</h2>
-    </div>
+            console.error("Chart.js library could not be loaded.");
+            return;
 
-</div>
+        }
 
-<br>
-<hr>
 
-<!-- RECENT APPOINTMENTS -->
+        // ==================================
+        // HOSPITAL DATA FROM FLASK
+        // ==================================
 
-<div class="dashboard-section">
+        const hospitalData = {
 
-    <h2>Recent Appointments</h2>
+            patients: {{ total_patients | default (0, true) | int | tojson
+    }},
 
-    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+        doctors: {{ total_doctors | default(0, true) | int | tojson }},
 
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Appointment Date</th>
-                <th>Appointment Time</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+        appointments: {{ total_appointments | default(0, true) | int | tojson }},
 
-        <tbody>
+        pending: {{ pending_appointments | default(0, true) | int | tojson }}
 
-            {% for a in recent_appointments %}
+    };
 
-            <tr>
-                <td>{{ a.patient_name }}</td>
-                <td>{{ a.doctor_name }}</td>
-                <td>{{ a.appointment_date }}</td>
-                <td>{{ a.appointment_time }}</td>
-                <td>{{ a.status }}</td>
-            </tr>
 
-            {% else %}
+    // ==================================
+    // ALL APPOINTMENT STATUS DATA
+    // ==================================
 
-            <tr>
-                <td colspan="5">No appointments available</td>
-            </tr>
+    const appointmentStatusData = {{ appointment_status_counts | default ([], true) | tojson }};
 
-            {% endfor %}
 
-        </tbody>
+    // Get status names
+    const statusLabels = appointmentStatusData.map(function (item) {
 
-    </table>
+        return item.status;
 
-</div>
+    });
 
-<br>
-<hr>
 
-<!-- RECENT PRESCRIPTIONS -->
+    // Get status counts
+    const statusValues = appointmentStatusData.map(function (item) {
 
-<div class="dashboard-section">
+        return Number(item.total);
 
-    <h2>Recent Prescriptions</h2>
+    });
 
-    <table border="1" cellpadding="10" cellspacing="0" width="100%">
 
-        <thead>
-            <tr>
-                <th>Prescription ID</th>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Prescription Date</th>
-                <th>Diagnosis</th>
-            </tr>
-        </thead>
+    // ==================================
+    // HOSPITAL OVERVIEW BAR CHART
+    // ==================================
 
-        <tbody>
+    const overviewCanvas =
+        document.getElementById("overviewChart");
 
-            {% for p in recent_prescriptions %}
 
-            <tr>
-                <td>{{ p.prescription_id }}</td>
-                <td>{{ p.patient_name }}</td>
-                <td>{{ p.doctor_name }}</td>
-                <td>{{ p.prescription_date }}</td>
-                <td>{{ p.diagnosis }}</td>
-            </tr>
+    if (overviewCanvas) {
 
-            {% else %}
+        new Chart(overviewCanvas, {
 
-            <tr>
-                <td colspan="5">No prescriptions available</td>
-            </tr>
+            type: "bar",
 
-            {% endfor %}
+            data: {
 
-        </tbody>
+                labels: [
+                    "Patients",
+                    "Doctors",
+                    "Appointments",
+                    "Pending"
+                ],
 
-    </table>
+                datasets: [{
 
-</div>
+                    label: "Total Count",
+
+                    data: [
+                        hospitalData.patients,
+                        hospitalData.doctors,
+                        hospitalData.appointments,
+                        hospitalData.pending
+                    ],
+
+                    backgroundColor: [
+                        "#8054A8",
+                        "#A51F5D",
+                        "#E85D91",
+                        "#D6A2BD"
+                    ],
+
+                    borderRadius: 8,
+
+                    borderSkipped: false,
+
+                    barThickness: 35
+
+                }]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+                        enabled: true
+                    }
+
+                },
+
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        }
+
+                    },
+
+                    x: {
+
+                        grid: {
+                            display: false
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    // ==================================
+    // APPOINTMENT STATUS COLORS
+    // ==================================
+
+    const statusColors = {
+
+        "Booked": "#A51F5D",
+
+        "Completed": "#8054A8",
+
+        "Cancelled": "#E85D91",
+
+        "Rescheduled": "#F2A36B"
+
+    };
+
+
+    // Assign colors based on status
+    const chartColors = statusLabels.map(function (status) {
+
+        return statusColors[status] || "#D6A2BD";
+
+    });
+
+
+    // ==================================
+    // APPOINTMENT STATUS DOUGHNUT CHART
+    // ==================================
+
+    const appointmentCanvas =
+        document.getElementById("appointmentChart");
+
+
+    if (appointmentCanvas) {
+
+        const hasAppointmentData =
+            statusLabels.length > 0;
+
+
+        const chartLabels = hasAppointmentData
+            ? statusLabels
+            : ["No appointment data"];
+
+
+        const chartValues = hasAppointmentData
+            ? statusValues
+            : [1];
+
+
+        const doughnutColors = hasAppointmentData
+            ? chartColors
+            : ["#EEDFE9"];
+
+
+        new Chart(appointmentCanvas, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: chartLabels,
+
+                datasets: [{
+
+                    data: chartValues,
+
+                    backgroundColor: doughnutColors,
+
+                    borderWidth: 3,
+
+                    borderColor: "#FFFFFF",
+
+                    hoverOffset: 8
+
+                }]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "68%",
+
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            padding: 18,
+
+                            usePointStyle: true
+
+                        }
+
+                    },
+
+
+                    tooltip: {
+
+                        enabled: hasAppointmentData
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+});
+
+</script>
 
 {% endblock %}

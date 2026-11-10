@@ -1,10 +1,10 @@
-
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import check_password_hash
 from db import get_db_connection
 
 app = Flask(__name__)
-app.secret_key = "healthcare_project_secret_key_change_later"
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 # ==================================
@@ -89,15 +89,28 @@ def dashboard():
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        cursor.execute("SELECT COUNT(*) AS total FROM patients")
+        # Total Patients
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM patients
+        """)
         total_patients = cursor.fetchone()["total"]
 
-        cursor.execute("SELECT COUNT(*) AS total FROM doctors")
+        # Total Doctors
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM doctors
+        """)
         total_doctors = cursor.fetchone()["total"]
 
-        cursor.execute("SELECT COUNT(*) AS total FROM appointments")
+        # Total Appointments
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM appointments
+        """)
         total_appointments = cursor.fetchone()["total"]
 
+        # Pending Appointments
         cursor.execute("""
             SELECT COUNT(*) AS total
             FROM appointments
@@ -105,6 +118,7 @@ def dashboard():
         """)
         pending_appointments = cursor.fetchone()["total"]
 
+        # Total Revenue (Paid Bills Only)
         cursor.execute("""
             SELECT COALESCE(SUM(total_amount), 0) AS revenue
             FROM bills
@@ -112,6 +126,17 @@ def dashboard():
         """)
         total_revenue = cursor.fetchone()["revenue"]
 
+        # All Appointment Status Counts
+        cursor.execute("""
+            SELECT
+                status,
+                COUNT(*) AS total
+            FROM appointments
+            GROUP BY status
+        """)
+        appointment_status_counts = cursor.fetchall()
+
+        # Recent Appointments (Latest 5)
         cursor.execute("""
             SELECT
                 a.appointment_date,
@@ -120,13 +145,16 @@ def dashboard():
                 p.full_name AS patient_name,
                 d.full_name AS doctor_name
             FROM appointments a
-            JOIN patients p ON a.patient_id = p.patient_id
-            JOIN doctors d ON a.doctor_id = d.doctor_id
+            JOIN patients p
+                ON a.patient_id = p.patient_id
+            JOIN doctors d
+                ON a.doctor_id = d.doctor_id
             ORDER BY a.appointment_id DESC
             LIMIT 5
         """)
         recent_appointments = cursor.fetchall()
 
+        # Recent Prescriptions (Latest 5)
         cursor.execute("""
             SELECT
                 p.prescription_id,
@@ -135,8 +163,10 @@ def dashboard():
                 pt.full_name AS patient_name,
                 d.full_name AS doctor_name
             FROM prescriptions p
-            JOIN patients pt ON p.patient_id = pt.patient_id
-            JOIN doctors d ON p.doctor_id = d.doctor_id
+            JOIN patients pt
+                ON p.patient_id = pt.patient_id
+            JOIN doctors d
+                ON p.doctor_id = d.doctor_id
             ORDER BY p.prescription_id DESC
             LIMIT 5
         """)
@@ -149,6 +179,7 @@ def dashboard():
             total_appointments=total_appointments,
             pending_appointments=pending_appointments,
             total_revenue=total_revenue,
+            appointment_status_counts=appointment_status_counts,
             recent_appointments=recent_appointments,
             recent_prescriptions=recent_prescriptions
         )
@@ -944,6 +975,7 @@ def prescription_medicines(prescription_id):
         prescription_id=prescription_id
     )
 
+
 # ==================================
 # MEDICAL RECORDS
 # ==================================
@@ -984,7 +1016,6 @@ def medical_records():
         "medical_records.html",
         records=records
     )
-
 
 
 # Add Medical Record
